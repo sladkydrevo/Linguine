@@ -1,0 +1,112 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<!-- RESULTS OF ANALYSIS PROCESSED THROUGH SPACY LIBRARY -->
+<div class="results-area">
+    <div id="info-area">
+
+        <!-- List of basic information about the text -->
+        <div id="base-info-list">
+            <p>Characters: {{ text.characters_count }}</p>
+            <p>Tokens: {{ text.tokens_count }}</p>
+            <p>Types: {{ text.types_count }}</p>
+            <p>Sentences: {{ text.sentence_count }}</p>
+            <p>Avg. word length: {{ "{:.2f}".format(text.avg_word_length) }}
+            <p>Avg. sentence length: {{ "{:.2f}".format(text.avg_sent_length) }}
+            <p>TTR: {{ "{:.0%}".format(text.ttr) }}</p>
+        </div>
+
+        <!-- The most frequent noun, adjective and verb and the longest words list -->
+        <div id="additional-info-list">
+            <div>
+                <h6><u>Most frequent words</u></h6>
+                <table id="most-frequent">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th class="frequency-info">Word</th>
+                            <th class="frequency-info">Frequency</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Noun</td>
+                            <td class="frequency-info">{{ most_frequent["noun"][0] if most_frequent["noun"][0] else "-" }}</td>
+                            <td class="frequency-info">{{ most_frequent["noun"][1] if most_frequent["noun"][1] else "-" }}</td>
+                        </tr>
+                        <tr>
+                            <td>Adjective</td>
+                            <td class="frequency-info">{{ most_frequent["adjective"][0] if most_frequent["adjective"][0] else "-" }}</td>
+                            <td class="frequency-info">{{ most_frequent["adjective"][1] if most_frequent["adjective"][1] else "-" }}</td>
+                        </tr>
+                        <tr>
+                            <td>Verb</td>
+                            <td class="frequency-info">{{ most_frequent["verb"][0] if most_frequent["verb"][0] else "-" }}</td>
+                            <td class="frequency-info">{{ most_frequent["verb"][1] if most_frequent["verb"][1] else "-" }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div id="longest">
+                <h6><u>Longest word/s → length: {{ longest[0]|length }}</u></h6> 
+                {% for word in longest %}
+                    <p>{{ word }}</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Scrollable and sortable table containing all tokens with their lemma form, POS, DepRel, stopword state -->
+    <div class="tab">
+        <div id="filter-area">
+            <input type="text" id="search-filter" onkeyup="searchFilter()" placeholder="Search token...">
+            <button type="button" id="export-table" class="action-button" onclick="saveTableCSV('sortable')">Export CSV</button>
+        </div>
+
+        <div class="scroll">
+            <table id="sortable" class="sortable">
+                <thead>
+                    <tr>
+                        <th>Token</th>
+                        <th>Lemma</th>
+                        <th>POS</th>
+                        <th>DepRel</th>
+                        <th>Stopword</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for word in tokens_data %}
+                        <tr>
+                            <td>{{ word["token"] }}</td>
+                            <td>{{ word["lemma"] }}</td>
+                            <td>{{ word["pos"] }}</td>
+                            <td>{{ word["deprel"] }}</td>
+                            <td>{{ word["stopword"] }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Two histograms and one scatter plot -->
+<div id="graph-area">
+    <div class="plot" id="hist1"></div>
+    <div class="plot" id="hist2"></div>
+    <div class="plot" id="scatt1"></div>
+</div>
+
+
+<script>
+    // graph creation
+    var sentenceLengths = {{ sentence_lengths }};
+    var wordLengths = {{ word_lengths }};
+    makeHistogram(sentenceLengths, "hist1", "Sentence", 5);
+    makeHistogram(wordLengths, "hist2", "Word", 1);
+    makeScattPlot(sentenceLengths, "scatt1");
+</script>
+    
+{% endblock %}

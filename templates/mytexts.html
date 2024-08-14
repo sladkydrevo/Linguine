@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<!-- THE MAIN APP PAGE -->
+<form id="user-form" action="/mytexts" method="post" enctype="multipart/form-data">
+    <div class="topArea">
+
+        <!-- Two buttons to analyze or explore – analyze clicked by default -->
+        <div class="action-buttons">
+            <input name="action" class="action" type="hidden">
+            <button type="button" class="action-button anaBtn" onclick="setActionColor('analyze', '.anaBtn')">Analyze</button>
+            <button type="button" class="action-button expBtn" onclick="setActionColor('explore', '.expBtn')">Explore</button>
+        </div>
+    </div>
+
+    <!-- Text field for regular expression – show after clicking on explore button -->
+    <div class="regexField">
+        <input class="regex" name="regex" type="text" placeholder="Search expression..."></div>
+    </div>
+
+    <!-- Error window – shows if error was encountered in Flask -->
+    {% include "error.html" %}
+    
+    <!-- List of texts the user have saved to their profile -->
+    <div class="user-texts">
+        <input name="text-name" id="text-id-input" class="action" type="hidden">
+        <input name="delete-text" id="delete-id" class="action" type="hidden">
+        {% for text in texts %}
+            <div class="user-text">
+                <div class="the-text">
+                    <p class="show-text">{{ text["name"] }}</p>
+                    <div style="display: none;" class="showed-text">
+                        <p>{{ text["text"] | safe }}</p>
+                    </div>
+                </div>
+                <div class="text-buttons">
+                    <button class="action-button submit-action-button" onclick="submitTextId({{ text["id"] }}, 'text-id-input'); submitForm();" type="submit">Search</button>
+                    <button class="action-button submit-action-button del-btn" onclick="submitTextId({{ text["id"] }}, 'delete-id'); submitForm();" type="submit">X</button>
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+</form>
+
+<script>
+    // saved form data, if any were previously imported in session
+    var formContents = {
+        language: "{{ form_data.get('language', '') }}",
+        action: "{{ form_data.get('action', '') }}",
+        textInput: "{{ form_data.get('text-input', '') }}",
+        regex: "{{ form_data.get('regex', '') }}"
+    };
+</script>
+
+{% endblock %}

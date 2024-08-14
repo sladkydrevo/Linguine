@@ -1,0 +1,42 @@
+[
+    {
+      "term": "token",
+      "meaning": "specific implementation of a text unit"
+    },
+    {
+      "term": "type",
+      "meaning": "unique word form in a text, ignoring repeats"
+    },
+    {
+      "term": "lemma",
+      "meaning": "base or dictionary form of a word"
+    },
+    {
+      "term": "POS",
+      "meaning": "part of speech – the grammatical category of a word (e.g., noun, adjective, verb)"
+    },
+    {
+      "term": "TTR",
+      "meaning": "type-token ratio – (number of types / number of tokens) * 100"
+    },
+    {
+      "term": "DepRel",
+      "meaning": "dependency relation – the grammatical relationship between words in a sentence"
+    },
+    {
+      "term": "stopword",
+      "meaning": "commonly used word (e.g., \"and\", \"the\"), often ignored in text processing"
+    },
+    {
+      "term": "regular expression",
+      "meaning": "A sequence of characters defining a search pattern, used for matching text."
+    },
+    {
+      "term": "histogram",
+      "meaning": "graph of data distribution, showing the frequency of data points within specified intervals (bins)"
+    },
+    {
+      "term": "scatter plot",
+      "meaning": "normally a graph showing the relationship between two variables using dots on a graph, revealing correlations or patterns"
+    }
+   ]

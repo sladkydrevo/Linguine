@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<!-- REGISTER PAGE -->
+<div class="login-page">
+    <div class="login-field">
+        <form class="login-form" action="/register" method="post" enctype="multipart/form-data">
+            Username<input name="username" type="text">
+            Password<input name="password" type="password">
+            Confirm password<input name="pw-confirm" type="password">
+            <button class="action-button submit-login-btn" type="submit">Register</button>  
+        </form>
+
+        <!-- Error window – shows if error was encountered in Flask -->
+        {% include "error.html" %}
+        
+    </div>
+</div>
+{% endblock %}

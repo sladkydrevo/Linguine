@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<!-- RESULTS OF SEARCHING THROUGH SENTENCES BY REGULAR EXPRESSION -->
+<div id="expression">
+    <p>Searched expression: <i>{{ regex_input }}</i></p>
+</div>
+
+<div class="results-area">
+    <div class="tab">
+        <table id="explore-table" class="sortable">
+            <thead>
+                <tr>
+                    <th>Sentence</th>
+                    <th>Words</th>
+                    <th>Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sentence in sentences %}
+                <tr>
+                    <td class="sentence"> {{ sentence["sentence"] | safe }} </td>
+                    <td>{{ sentence["length"] }}</td>
+                    <td>{{ sentence["type"] }}</td>
+                </tr>
+                {% endfor %}  
+            </tbody>
+        </table>
+    </div>
+</div>
+ 
+{% endblock %}

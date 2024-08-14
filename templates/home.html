@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+
+<!-- THE MAIN APP PAGE -->
+<form action="/" method="post" enctype="multipart/form-data">
+    <div class="topArea">
+
+        <!-- Two buttons to analyze or explore – analyze clicked by default -->
+        <div class="action-buttons">
+            <input name="action" class="action" type="hidden">
+            <button type="button" class="action-button anaBtn" onclick="setActionColor('analyze', '.anaBtn')">Analyze</button>
+            <button type="button" class="action-button expBtn" onclick="setActionColor('explore', '.expBtn')">Explore</button>
+        </div>
+
+        <div class="actionChoiceArea" style="{% if not logged_in %} justify-content: start; {% endif %}">
+            <!-- Language choice based on which the text will be processed -->
+            <div id="languagesField">
+                <select id="languages" name="language" size="2">
+                    <option value="en" id="en" selected>English</option>
+                    <option value="cs" id="cs" {% if form_data.get("language") == "cs"%} selected {% endif %}>Czech</option>
+                </select>
+            </div>
+            
+            <!-- Button for saving the text into user's profile – visible if logged in -->
+            <div class="save-field" style="{% if not logged_in %} display: none; {% endif %}">
+                <input name="save" class="action" type="hidden">
+                <button type="button" id="save-to-db" class="action-button" onclick="showNameInput('.sw')">Save to profile</button>
+                <div class="save-window sw">
+                    <input type="text" name="text-name" maxlength="30">
+                    <button type="submit" id="submit-to-db" class="action-button">Save</button>
+                    <button type="button" class="close-btn" onclick="hideWindow('.sw')">X</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Text field for regular expression – show after clicking on explore button -->
+    <div class="regexField">
+        <input class="regex" name="regex" type="text" placeholder="Search expression..."></div>
+    </div>
+
+    <!-- Error window – shows if error was encountered in Flask -->
+    {% include "error.html" %}
+    
+    <!-- Choice between file import and text input -->
+    <div id="input-choice-area">
+        <div id="input_drop_file">
+            <p>Choose file here</p>
+            <input id="fileInput" name="file-input" type="file" accept=".txt">
+        </div>
+
+        <div id="submit-button-area">
+            <div class="line" id="line1"></div>
+            
+            <button class="action-button submit-action-button" type="submit">Search</button>
+            <div class="line" id="line2"></div>
+        </div>
+
+        <div class="input-text-field">
+            <textarea id="textInput" name="text-input" class="text-field" placeholder="Write text here...">{{ form_data.get('text-input', '') }}</textarea>
+        </div>
+    </div>
+</form>
+
+
+<script>
+    // saved form data, if any were previously imported in session
+    var formContents = {
+        language: "{{ form_data.get('language', '') }}",
+        action: "{{ form_data.get('action', '') }}",
+        textInput: "{{ form_data.get('text_input', '') }}",
+        regex: "{{ form_data.get('regex', '') }}"
+    };
+</script>
+
+{% endblock %}
